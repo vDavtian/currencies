@@ -11,9 +11,8 @@ const App = ({ getAllCurrencies, currencies }) => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState('');
-  const lastId = Math.max(...currencies.data.map(i => i.currencyId));
-  const filter = currencies.data.map(item => ({ ...item, searchText: item.name }));
-  const filteredData = filterData(searchText, filter);
+  const lastId = Math.max(...currencies.data.map(item => item.currencyId));
+  const data = currencies.data.map(item => ({ ...item, searchText: item.name }));
 
   useEffect(() => {
     getAllCurrencies()
@@ -23,19 +22,30 @@ const App = ({ getAllCurrencies, currencies }) => {
 
   const onCreate = () => {
     toggleDialog();
-    setSelectedRow({ dialogType: 'Create' })
+    setSelectedRow({ dialogType: 'Create' });
+  }
+
+  const filterData = (searchText, data) => {
+    if (!searchText.trim().length) {
+      return data;
+    }
+    const searchBy = searchText.trim().toString().toLowerCase();
+    const filteredData = data.filter(({ name }) =>
+      name.toString().toLowerCase().indexOf(searchBy) !== -1)
+
+    return filteredData;
   }
 
   return (
     <div className="App">
       <Grid container spacing={2} justifyContent={'space-between'} style={{ border: '1px solid red' }}>
         <Typography variant={'h6'}>Custom Currencies</Typography>
-        <Button onClick={onCreate}>Add Currency</Button>
+        <Button variant="contained" color="primary" onClick={onCreate}>Add Currency</Button>
       </Grid>
       <Grid container spacing={2} style={{ border: '2px solid blue', marginTop: '20px' }}>
         <SearchBlock onInputChange={(e) => setSearchText(e.target.value)} />
         <CurrencyTable
-          data={filteredData}
+          data={filterData(searchText, data)}
           searchText={searchText}
           toggleDialog={toggleDialog}
           setSelectedRow={setSelectedRow}
@@ -50,17 +60,6 @@ const App = ({ getAllCurrencies, currencies }) => {
     </div >
   );
 }
-
-function filterData(searchText, data) {
-  if (!searchText.trim().length) {
-    return data;
-  }
-  const searchBy = searchText.trim().toString().toLowerCase();
-  const filteredData = data.filter(({ name }) =>
-    name.toString().toLowerCase().indexOf(searchBy) !== -1)
-
-  return filteredData;
-};
 
 const mapStateToProps = state => ({
   currencies: state.currencies
