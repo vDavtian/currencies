@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Grid, Typography, Box, withStyles } from "@material-ui/core";
 import { getAllCurrencies } from "./store/actions/currencyActions"
 import CurrencyTable from "./components/CurrencyTable";
-import SearchBlock from "./components/SearchBlock";
+import InputBox from "./components/InputBox";
 import Dialog from "./components/Dialog";
 import ButtonComponent from "./components/ButtonComponent";
 
@@ -63,7 +63,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
       </Grid>
       <Grid container justifyContent={"flex-end"} className={classes.tableContainer}>
         <Box className={classes.searchBlock}>
-          <SearchBlock
+          <InputBox
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search currency by Currency name" />
         </Box>

@@ -7,7 +7,7 @@ import {
     DialogContent,
     DialogTitle
 } from '@material-ui/core';
-import SearchBlock from './SearchBlock';
+import InputBox from './InputBox';
 import ButtonComponent from './ButtonComponent';
 
 const DialogComponent = ({
@@ -15,7 +15,6 @@ const DialogComponent = ({
 }) => {
     const [name, setName] = useState('');
     const [rate, setRate] = useState('');
-    const [isRateError, setIsRateError] = useState(false);
 
     useEffect(() => {
         setName(selectedRow.name);
@@ -24,30 +23,17 @@ const DialogComponent = ({
 
     const handleNameChange = (value) => setName(value);
 
-    const handleRateChange = (value) => {
-        const isValueContainsOnlyNumbers = /^\d+$/.test(value);
-
-        if (!isValueContainsOnlyNumbers) {
-            setIsRateError(true);
-        } else {
-            setIsRateError(false);
-        }
-
-        setRate(value);
-    }
-
     const isConfirmActive = () => {
         const isNotFilled = !name || !rate;
         const isSameValue = selectedRow.name === name?.trim() && selectedRow.rate === rate?.trim();
+        const isContainsOnlyNumbers = !(/^\d+$/.test(rate));
 
-        return isNotFilled || isSameValue || isRateError;
+        return isNotFilled || isSameValue || isContainsOnlyNumbers;
     }
 
     const onClose = () => {
         setName('');
         setRate('');
-        setIsRateError(false);
-        onConfirm(selectedRow)
         toggleDialog();
     }
 
@@ -86,7 +72,7 @@ const DialogComponent = ({
                         ? <DialogContent>
                             Name
                             <br />
-                            <SearchBlock
+                            <InputBox
                                 defaultValue={name}
                                 placeholder="Enter name"
                                 onChange={(e) => handleNameChange(e.target.value)}
@@ -94,11 +80,10 @@ const DialogComponent = ({
                             <br />
                             Rate
                             <br />
-                            <SearchBlock
-                                error={isRateError}
+                            <InputBox
                                 defaultValue={rate}
                                 placeholder="Enter rate"
-                                onChange={(e) => { handleRateChange(e.target.value) }}
+                                onChange={(e) => { setRate(e.target.value) }}
                             />
                         </DialogContent>
                         : <DialogContent>
@@ -117,7 +102,7 @@ const DialogComponent = ({
                             variant="contained"
                             textcolor="white"
                             disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
-                            onClick={onClose}
+                            onClick={() => { onClose(); onConfirm(selectedRow) }}
                         >
                             Confirm
                         </ButtonComponent>

@@ -9,18 +9,19 @@ const styles = {
     }
 };
 
-const InputBox = ({ onChange, classes, defaultValue, placeholder, error }) => {
+const InputBox = React.memo(({ onChange, classes, defaultValue, placeholder }) => {
     return (
         <TextField
             InputProps={{ className: classes.input }}
             size="small"
-            error={error}
             defaultValue={defaultValue}
             onChange={onChange}
             placeholder={placeholder}
             variant="outlined"
         />
     );
-}
+}, (_prevProps, _nextProps) => {
+    return true;
+});
 
 export default withStyles(styles)(InputBox);
