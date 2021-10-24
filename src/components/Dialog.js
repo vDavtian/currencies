@@ -5,8 +5,7 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
-    DialogTitle,
+    DialogTitle
 } from '@material-ui/core';
 import SearchBlock from './SearchBlock';
 import ButtonComponent from './ButtonComponent';
@@ -103,11 +102,8 @@ const DialogComponent = ({
                             />
                         </DialogContent>
                         : <DialogContent>
-                            <DialogContentText>
-                                Are you sure you want to remove this Currency
-                            </DialogContentText>
-                        </DialogContent>
-                    }
+                            Are you sure you want to remove this Currency
+                        </DialogContent>}
                     <DialogActions>
                         <ButtonComponent
                             variant="text"
@@ -119,6 +115,7 @@ const DialogComponent = ({
                         <ButtonComponent
                             background="#02baff"
                             variant="contained"
+                            textcolor="white"
                             disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
                             onClick={onClose}
                         >
