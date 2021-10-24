@@ -42,6 +42,14 @@ function ResponsiveDialog({ lastId, open, selectedRow, toggleDialog, editCurrenc
         return isNotFilled || isSameValue || isRateError;
     }
 
+    const onClose = () => {
+        setName('');
+        setRate('');
+        setIsRateError(false);
+        onConfirm(selectedRow)
+        toggleDialog();
+    }
+
     const onConfirm = (selectedRow) => {
         const { dialogType, rate: selectedRowRate, id: selectedRowId, currencyId } = selectedRow;
 
@@ -98,10 +106,7 @@ function ResponsiveDialog({ lastId, open, selectedRow, toggleDialog, editCurrenc
                     <Button onClick={toggleDialog}>Cancel</Button>
                     <Button
                         disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
-                        onClick={() => {
-                            toggleDialog();
-                            onConfirm(selectedRow)
-                        }}
+                        onClick={onClose}
                     >
                         Confirm
                     </Button>
