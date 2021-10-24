@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { editCurrency, addCurrency, deleteCurrency } from '../store/actions/currencyActions';
 import {
@@ -13,23 +13,50 @@ import {
 
 function ResponsiveDialog({ lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency }) {
     const [name, setName] = useState('');
-    const [rate, setRate] = useState();
+    const [rate, setRate] = useState('');
+    const [isRateError, setIsRateError] = useState(false);
+
+    useEffect(() => {
+        setName(selectedRow.name);
+        setRate(selectedRow.rate);
+    }, [selectedRow.name, selectedRow.rate]);
+
+    const handleNameChange = (value) => setName(value);
+
+    const handleRateChange = (value) => {
+        const isValueContainsOnlyNumbers = /^\d+$/.test(value);
+
+        if (!isValueContainsOnlyNumbers) {
+            setIsRateError(true);
+        } else {
+            setIsRateError(false);
+        }
+
+        setRate(value);
+    }
+
+    const isConfirmActive = () => {
+        const isNotFilled = !name || !rate;
+        const isSameValue = selectedRow.name === name?.trim() && selectedRow.rate === rate?.trim();
+
+        return isNotFilled || isSameValue || isRateError;
+    }
 
     const onConfirm = (selectedRow) => {
-        const { dialogType, rate: selectedRowRate, id: selectedRowId } = selectedRow;
+        const { dialogType, rate: selectedRowRate, id: selectedRowId, currencyId } = selectedRow;
 
         switch (dialogType) {
             case 'Create':
                 return addCurrency({
                     name,
                     currencyId: lastId + 1,
-                    rate: parseInt(rate)
+                    rate
                 });
             case 'Edit':
                 return editCurrency({
                     name,
-                    currencyId: 12,
-                    rate: parseInt(rate || selectedRowRate),
+                    currencyId,
+                    rate: rate || selectedRowRate,
                     id: selectedRowId
                 });
             case "Remove":
@@ -49,14 +76,17 @@ function ResponsiveDialog({ lastId, open, selectedRow, toggleDialog, editCurrenc
                     ? <DialogContent>
                         <TextField
                             variant="outlined"
-                            defaultValue={selectedRow.name || ''}
-                            onChange={(e) => setName(e.target.value)}
+                            defaultValue={name}
+                            onChange={(e) => handleNameChange(e.target.value)}
                         />
                         <br />
                         <TextField
+                            error={isRateError}
                             variant="outlined"
-                            defaultValue={selectedRow.rate || ''}
-                            onChange={(e) => setRate(e.target.value)}
+                            defaultValue={rate}
+                            onChange={(e) => {
+                                handleRateChange(e.target.value)
+                            }}
                         />
                     </DialogContent>
                     : <DialogContent>
@@ -66,10 +96,15 @@ function ResponsiveDialog({ lastId, open, selectedRow, toggleDialog, editCurrenc
                     </DialogContent>}
                 <DialogActions>
                     <Button onClick={toggleDialog}>Cancel</Button>
-                    <Button onClick={() => {
-                        toggleDialog();
-                        onConfirm(selectedRow)
-                    }}>Confirm</Button>
+                    <Button
+                        disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
+                        onClick={() => {
+                            toggleDialog();
+                            onConfirm(selectedRow)
+                        }}
+                    >
+                        Confirm
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>
