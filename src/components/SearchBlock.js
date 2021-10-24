@@ -1,13 +1,24 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
+import React from "react";
+import { TextField, withStyles } from "@material-ui/core";
 
-export default function SearchBlock({ onInputChange }) {
+const styles = {
+    input: {
+        color: "#dfe1f1",
+        backgroundColor: "#1b1e37",
+        width: "400px",
+    }
+};
+
+function SearchBlock({ onInputChange, classes }) {
     return (
         <TextField
+            InputProps={{ className: classes.input }}
+            size="small"
             onChange={onInputChange}
-            id="outlined-basic"
-            placeholder="searchchch"
+            placeholder="Search currency by Currency name"
             variant="outlined"
         />
     );
 }
+
+export default withStyles(styles)(SearchBlock);

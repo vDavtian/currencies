@@ -1,31 +1,39 @@
-import React from 'react';
+import React from "react";
 import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, makeStyles
-} from '@material-ui/core';
-import { Delete, Edit } from '@material-ui/icons';
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles
+} from "@material-ui/core";
+import { Delete, Edit } from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
     root: {
-        background: '#1f233f',
-        // margin: '10px'
+        background: "#1f233f",
+        // margin: "10px"
     },
     table: {
         minWidth: 700
     },
     tableCell: {
-        color: '#dfe1f1',
+        color: "#dfe1f1",
     },
-}));
+    tableHead: {
+        borderBottom: "1px solid #e0e0e0"
+    },
+    removeIcon: {
+        color: "#f44436",
+        cursor: "pointer"
+    },
+    editIcon: {
+        color: "#15edb1",
+        marginRight: "20px",
+        cursor: "pointer"
+    }
+};
 
-const CurrencyTable = ({ data, toggleDialog, setSelectedRow }) => {
-    const classes = useStyles();
-
+const CurrencyTable = ({ classes, data, toggleDialog, setSelectedRow }) => {
     return (
         <TableContainer className={classes.root} component={Paper} >
             <Table className={classes.table}>
-                <TableHead
-                    style={{ borderBottom: '1px solid #e0e0e0' }}
-                >
+                <TableHead className={classes.tableHead}>
                     <TableRow>
                         <TableCell className={classes.tableCell}>ID</TableCell>
                         <TableCell className={classes.tableCell}>Currency Name</TableCell>
@@ -40,16 +48,17 @@ const CurrencyTable = ({ data, toggleDialog, setSelectedRow }) => {
                             <TableCell className={classes.tableCell}>{item.rate}</TableCell>
                             <TableCell className={classes.tableCell} align="right">
                                 <Edit
+                                    className={classes.editIcon}
                                     onClick={() => {
                                         toggleDialog();
-                                        setSelectedRow({ ...item, dialogType: 'Edit' })
+                                        setSelectedRow({ ...item, dialogType: "Edit" })
                                     }}
                                 />
                                 <Delete
-                                    color='secondary'
+                                    className={classes.removeIcon}
                                     onClick={() => {
                                         toggleDialog();
-                                        setSelectedRow({ ...item, dialogType: 'Remove' })
+                                        setSelectedRow({ ...item, dialogType: "Remove" })
                                     }}
                                 />
                             </TableCell>
@@ -61,4 +70,4 @@ const CurrencyTable = ({ data, toggleDialog, setSelectedRow }) => {
     );
 }
 
-export default CurrencyTable;
+export default withStyles(styles)(CurrencyTable);
