@@ -1,5 +1,5 @@
 import { collection, getDocs, addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
-import db from "./firebase";
+import db from "./configs/firebase";
 
 export const getData = async (dbCollection) => {
     const querySnapshot = await getDocs(collection(db, dbCollection));

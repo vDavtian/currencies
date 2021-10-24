@@ -12,7 +12,6 @@ const App = ({ getAllCurrencies, currencies }) => {
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState('');
   const lastId = Math.max(...currencies.data.map(item => item.currencyId));
-  const data = currencies.data.map(item => ({ ...item, searchText: item.name }));
 
   useEffect(() => {
     getAllCurrencies()
@@ -45,7 +44,7 @@ const App = ({ getAllCurrencies, currencies }) => {
       <Grid container spacing={2} style={{ border: '2px solid blue', marginTop: '20px' }}>
         <SearchBlock onInputChange={(e) => setSearchText(e.target.value)} />
         <CurrencyTable
-          data={filterData(searchText, data)}
+          data={filterData(searchText, currencies.data)}
           searchText={searchText}
           toggleDialog={toggleDialog}
           setSelectedRow={setSelectedRow}

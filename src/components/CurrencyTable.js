@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 
-export default function CurrencyTable({ data, toggleDialog, setSelectedRow }) {
+const CurrencyTable = ({ data, toggleDialog, setSelectedRow }) => {
     return (
         <TableContainer style={{ border: '1px solid pink', margin: '10px' }} component={Paper}>
             <Table>
@@ -43,3 +43,5 @@ export default function CurrencyTable({ data, toggleDialog, setSelectedRow }) {
         </TableContainer>
     );
 }
+
+export default CurrencyTable;
