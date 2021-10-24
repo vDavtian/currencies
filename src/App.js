@@ -11,7 +11,7 @@ const App = ({ getAllCurrencies, currencies }) => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState('');
-  const lastId = Math.max(...currencies.data.map(item => item.currencyId));
+  const lastId = Math.max(...currencies.data.map(item => item.currencyId)) | 0;
 
   useEffect(() => {
     getAllCurrencies()
