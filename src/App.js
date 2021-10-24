@@ -1,13 +1,28 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, Box, withStyles } from '@material-ui/core';
 import { getAllCurrencies } from './store/actions/currencyActions'
 import CurrencyTable from './components/CurrencyTable';
 import SearchBlock from './components/SearchBlock';
 import Dialog from './components/Dialog';
 
-const App = ({ getAllCurrencies, currencies }) => {
+const styles = {
+  createButton: {
+    backgroundColor: '#02baff',
+    color: '#e0e0e0'
+  },
+  searchBlock: {
+    marginTop: '20px'
+  },
+  tableContainer: {
+    marginTop: '25px',
+    backgroundColor: '#1f233f',
+    padding: '20px'
+  }
+};
+
+const App = ({ getAllCurrencies, currencies, classes }) => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState('');
@@ -37,19 +52,23 @@ const App = ({ getAllCurrencies, currencies }) => {
 
   return (
     <div className="App">
-      <Grid container spacing={2} justifyContent={'space-between'} style={{ border: '1px solid red' }}>
-        <Typography variant={'h6'}>Custom Currencies</Typography>
-        <Button variant="contained" color="primary" onClick={onCreate}>Add Currency</Button>
+      <Grid container justifyContent={'space-between'}>
+        <Typography variant={'h5'}>Custom Currencies</Typography>
+        <Button variant="contained" onClick={onCreate} className={classes.createButton}>
+          Add Currency
+        </Button>
       </Grid>
-      <Grid container spacing={2} style={{ border: '2px solid blue', marginTop: '20px' }}>
-        <SearchBlock onInputChange={(e) => setSearchText(e.target.value)} />
+      <Grid container justifyContent={'flex-end'} className={classes.tableContainer}>
+        <Box className={classes.searchBlock}>
+          <SearchBlock onInputChange={(e) => setSearchText(e.target.value)} />
+        </Box>
         <CurrencyTable
           data={filterData(searchText, currencies.data)}
           searchText={searchText}
           toggleDialog={toggleDialog}
           setSelectedRow={setSelectedRow}
         />
-      </Grid>
+      </Grid >
       <Dialog
         open={open}
         toggleDialog={toggleDialog}
@@ -68,4 +87,4 @@ const mapDispatchToProps = {
   getAllCurrencies: getAllCurrencies
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));

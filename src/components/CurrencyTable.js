@@ -7,7 +7,6 @@ import { Delete, Edit } from "@material-ui/icons";
 const styles = {
     root: {
         background: "#1f233f",
-        // margin: "10px"
     },
     table: {
         minWidth: 700

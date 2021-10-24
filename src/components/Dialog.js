@@ -11,7 +11,9 @@ import {
     TextField
 } from '@material-ui/core';
 
-function ResponsiveDialog({ lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency }) {
+const DialogComponent = ({
+    lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency
+}) => {
     const [name, setName] = useState('');
     const [rate, setRate] = useState('');
     const [isRateError, setIsRateError] = useState(false);
@@ -126,4 +128,4 @@ const mapDispatchToProps = {
     deleteCurrency: deleteCurrency
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResponsiveDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(DialogComponent);
