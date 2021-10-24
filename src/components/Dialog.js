@@ -32,6 +32,7 @@ const DialogComponent = ({
     }
 
     const onClose = () => {
+        // TODO fix state changin
         setName('');
         setRate('');
         toggleDialog();

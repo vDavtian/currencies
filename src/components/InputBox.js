@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { TextField, withStyles } from "@material-ui/core";
 
 const styles = {
@@ -9,7 +9,7 @@ const styles = {
     }
 };
 
-const InputBox = React.memo(({ onChange, classes, defaultValue, placeholder }) => {
+const InputBox = memo(({ onChange, classes, defaultValue, placeholder }) => {
     return (
         <TextField
             InputProps={{ className: classes.input }}
