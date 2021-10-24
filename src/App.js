@@ -17,6 +17,9 @@ const styles = {
     backgroundColor: "#1f233f",
     padding: "20px",
     borderRadius: "3px"
+  },
+  title: {
+    color: "white"
   }
 };
 
@@ -25,6 +28,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState("");
   const lastId = Math.max(...currencies.data.map(item => item.currencyId)) | 0;
+  const data = currencies.data.sort((a, b) => a.currencyId - b.currencyId);;
 
   useEffect(() => {
     getAllCurrencies()
@@ -51,7 +55,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
   return (
     <div className="App">
       <Grid container justifyContent={"space-between"}>
-        <Typography variant={"h5"}>Custom Currencies</Typography>
+        <Typography variant={"h5"} className={classes.title}>Custom Currencies</Typography>
         <ButtonComponent
           background="#02baff"
           textcolor="white"
@@ -68,7 +72,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
             placeholder="Search currency by Currency name" />
         </Box>
         <CurrencyTable
-          data={filterData(searchText, currencies.data)}
+          data={filterData(searchText, data)}
           searchText={searchText}
           toggleDialog={toggleDialog}
           setSelectedRow={setSelectedRow}
