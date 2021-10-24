@@ -3,16 +3,24 @@ import { connect } from 'react-redux';
 import { editCurrency, addCurrency, deleteCurrency } from '../store/actions/currencyActions';
 import {
     Dialog,
-    Button,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    TextField
+    withStyles
 } from '@material-ui/core';
+import SearchBlock from './SearchBlock';
+import ButtonComponent from './ButtonComponent';
+
+const styles = {
+    dialogTitle: {
+        // color: 'white',
+        // backgroundColor: '#1f233d',
+    },
+};
 
 const DialogComponent = ({
-    lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency
+    lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency, classes
 }) => {
     const [name, setName] = useState('');
     const [rate, setRate] = useState('');
@@ -79,40 +87,44 @@ const DialogComponent = ({
     return (
         <div>
             <Dialog open={open} onClose={toggleDialog}>
-                <DialogTitle id="responsive-dialog-title">
-                    {`${selectedRow.dialogType} Currency`}
-                </DialogTitle>
-                {selectedRow.dialogType !== 'Remove'
-                    ? <DialogContent>
-                        <TextField
-                            variant="outlined"
-                            defaultValue={name}
-                            onChange={(e) => handleNameChange(e.target.value)}
-                        />
-                        <br />
-                        <TextField
-                            error={isRateError}
-                            variant="outlined"
-                            defaultValue={rate}
-                            onChange={(e) => {
-                                handleRateChange(e.target.value)
-                            }}
-                        />
-                    </DialogContent>
-                    : <DialogContent>
-                        <DialogContentText>
-                            Are you sure you want to remove this Currency
-                        </DialogContentText>
-                    </DialogContent>}
-                <DialogActions>
-                    <Button onClick={toggleDialog}>Cancel</Button>
-                    <Button
-                        disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
-                        onClick={onClose}
-                    >
-                        Confirm
-                    </Button>
-                </DialogActions>
+                <div style={{ backgroundColor: '#1f233d', color: 'white' }}>
+                    <DialogTitle id="responsive-dialog-title" className={classes.dialogTitle}>
+                        {`${selectedRow.dialogType} Currency`}
+                    </DialogTitle>
+                    {selectedRow.dialogType !== 'Remove'
+                        ? <DialogContent className={classes.dialogContent}>
+                            Name
+                            <br />
+                            <SearchBlock
+                                defaultValue={name}
+                                placeholder="Enter name"
+                                onChange={(e) => handleNameChange(e.target.value)}
+                            />
+                            <br />
+                            Rate
+                            <br />
+                            <SearchBlock
+                                error={isRateError}
+                                defaultValue={rate}
+                                placeholder="Enter rate"
+                                onChange={(e) => { handleRateChange(e.target.value) }}
+                            />
+                        </DialogContent>
+                        : <DialogContent>
+                            <DialogContentText>
+                                Are you sure you want to remove this Currency
+                            </DialogContentText>
+                        </DialogContent>}
+                    <DialogActions className={classes.dialogActions}>
+                        <ButtonComponent variant="text" onClick={toggleDialog}>Cancel</ButtonComponent>
+                        <ButtonComponent
+                            disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
+                            onClick={onClose}
+                        >
+                            Confirm
+                        </ButtonComponent>
+                    </DialogActions>
+                </div>
             </Dialog>
         </div>
     );
@@ -128,4 +140,4 @@ const mapDispatchToProps = {
     deleteCurrency: deleteCurrency
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DialogComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DialogComponent));

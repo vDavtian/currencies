@@ -1,24 +1,23 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Button, Typography, Box, withStyles } from '@material-ui/core';
+import { Grid, Typography, Box, withStyles } from '@material-ui/core';
 import { getAllCurrencies } from './store/actions/currencyActions'
 import CurrencyTable from './components/CurrencyTable';
 import SearchBlock from './components/SearchBlock';
 import Dialog from './components/Dialog';
+import ButtonComponent from './components/ButtonComponent';
 
 const styles = {
-  createButton: {
-    backgroundColor: '#02baff',
-    color: '#e0e0e0'
-  },
+
   searchBlock: {
-    marginTop: '20px'
+    marginTop: '15px'
   },
   tableContainer: {
     marginTop: '25px',
     backgroundColor: '#1f233f',
-    padding: '20px'
+    padding: '20px',
+    borderRadius: '3px'
   }
 };
 
@@ -54,13 +53,13 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
     <div className="App">
       <Grid container justifyContent={'space-between'}>
         <Typography variant={'h5'}>Custom Currencies</Typography>
-        <Button variant="contained" onClick={onCreate} className={classes.createButton}>
-          Add Currency
-        </Button>
+        <ButtonComponent onClick={onCreate}>Add Currency</ButtonComponent>
       </Grid>
       <Grid container justifyContent={'flex-end'} className={classes.tableContainer}>
         <Box className={classes.searchBlock}>
-          <SearchBlock onInputChange={(e) => setSearchText(e.target.value)} />
+          <SearchBlock
+            onChange={(e) => setSearchText(e.target.value)}
+            placeholder="Search currency by Currency name" />
         </Box>
         <CurrencyTable
           data={filterData(searchText, currencies.data)}

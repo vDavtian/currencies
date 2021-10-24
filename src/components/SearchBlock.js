@@ -9,16 +9,18 @@ const styles = {
     }
 };
 
-function SearchBlock({ onInputChange, classes }) {
+const InputBox = ({ onChange, classes, defaultValue, placeholder, error }) => {
     return (
         <TextField
             InputProps={{ className: classes.input }}
             size="small"
-            onChange={onInputChange}
-            placeholder="Search currency by Currency name"
+            error={error}
+            defaultValue={defaultValue}
+            onChange={onChange}
+            placeholder={placeholder}
             variant="outlined"
         />
     );
 }
 
-export default withStyles(styles)(SearchBlock);
+export default withStyles(styles)(InputBox);
