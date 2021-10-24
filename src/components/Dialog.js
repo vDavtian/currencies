@@ -7,17 +7,9 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    withStyles
 } from '@material-ui/core';
 import SearchBlock from './SearchBlock';
 import ButtonComponent from './ButtonComponent';
-
-const styles = {
-    dialogTitle: {
-        // color: 'white',
-        // backgroundColor: '#1f233d',
-    },
-};
 
 const DialogComponent = ({
     lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency, classes
@@ -88,11 +80,11 @@ const DialogComponent = ({
         <div>
             <Dialog open={open} onClose={toggleDialog}>
                 <div style={{ backgroundColor: '#1f233d', color: 'white' }}>
-                    <DialogTitle id="responsive-dialog-title" className={classes.dialogTitle}>
+                    <DialogTitle id="responsive-dialog-title">
                         {`${selectedRow.dialogType} Currency`}
                     </DialogTitle>
                     {selectedRow.dialogType !== 'Remove'
-                        ? <DialogContent className={classes.dialogContent}>
+                        ? <DialogContent>
                             Name
                             <br />
                             <SearchBlock
@@ -114,10 +106,19 @@ const DialogComponent = ({
                             <DialogContentText>
                                 Are you sure you want to remove this Currency
                             </DialogContentText>
-                        </DialogContent>}
-                    <DialogActions className={classes.dialogActions}>
-                        <ButtonComponent variant="text" onClick={toggleDialog}>Cancel</ButtonComponent>
+                        </DialogContent>
+                    }
+                    <DialogActions>
                         <ButtonComponent
+                            variant="text"
+                            textcolor="#02baff"
+                            onClick={toggleDialog}
+                        >
+                            Cancel
+                        </ButtonComponent>
+                        <ButtonComponent
+                            background="#02baff"
+                            variant="contained"
                             disabled={selectedRow.dialogType !== "Remove" ? isConfirmActive() : false}
                             onClick={onClose}
                         >
@@ -140,4 +141,4 @@ const mapDispatchToProps = {
     deleteCurrency: deleteCurrency
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DialogComponent));
+export default connect(mapStateToProps, mapDispatchToProps)(DialogComponent);

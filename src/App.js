@@ -1,30 +1,29 @@
-import './App.css';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Grid, Typography, Box, withStyles } from '@material-ui/core';
-import { getAllCurrencies } from './store/actions/currencyActions'
-import CurrencyTable from './components/CurrencyTable';
-import SearchBlock from './components/SearchBlock';
-import Dialog from './components/Dialog';
-import ButtonComponent from './components/ButtonComponent';
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Grid, Typography, Box, withStyles } from "@material-ui/core";
+import { getAllCurrencies } from "./store/actions/currencyActions"
+import CurrencyTable from "./components/CurrencyTable";
+import SearchBlock from "./components/SearchBlock";
+import Dialog from "./components/Dialog";
+import ButtonComponent from "./components/ButtonComponent";
 
 const styles = {
-
   searchBlock: {
-    marginTop: '15px'
+    marginTop: "15px"
   },
   tableContainer: {
-    marginTop: '25px',
-    backgroundColor: '#1f233f',
-    padding: '20px',
-    borderRadius: '3px'
+    marginTop: "25px",
+    backgroundColor: "#1f233f",
+    padding: "20px",
+    borderRadius: "3px"
   }
 };
 
 const App = ({ getAllCurrencies, currencies, classes }) => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const lastId = Math.max(...currencies.data.map(item => item.currencyId)) | 0;
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
 
   const onCreate = () => {
     toggleDialog();
-    setSelectedRow({ dialogType: 'Create' });
+    setSelectedRow({ dialogType: "Create" });
   }
 
   const filterData = (searchText, data) => {
@@ -51,11 +50,18 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
 
   return (
     <div className="App">
-      <Grid container justifyContent={'space-between'}>
-        <Typography variant={'h5'}>Custom Currencies</Typography>
-        <ButtonComponent onClick={onCreate}>Add Currency</ButtonComponent>
+      <Grid container justifyContent={"space-between"}>
+        <Typography variant={"h5"}>Custom Currencies</Typography>
+        <ButtonComponent
+          background="#02baff"
+          textcolor="white"
+          variant="contained"
+          onClick={onCreate}
+        >
+          Add Currency
+        </ButtonComponent>
       </Grid>
-      <Grid container justifyContent={'flex-end'} className={classes.tableContainer}>
+      <Grid container justifyContent={"flex-end"} className={classes.tableContainer}>
         <Box className={classes.searchBlock}>
           <SearchBlock
             onChange={(e) => setSearchText(e.target.value)}

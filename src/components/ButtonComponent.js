@@ -1,24 +1,18 @@
-import React from "react";
-import { Button, withStyles } from "@material-ui/core";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
-const styles = {
-    createButton: {
-        backgroundColor: '#02baff',
-        color: '#e0e0e0'
+const useStyles = makeStyles({
+    root: {
+        background: ({ background }) => background,
+        color: ({ textcolor }) => textcolor,
     },
-};
+});
 
-const ButtonComponent = ({ variant, onClick, classes, children, disabled }) => {
-    return (
-        <Button
-            disabled={disabled}
-            variant={variant}
-            onClick={onClick}
-            className={classes.createButton}
-        >
-            {children}
-        </Button>
-    );
+const ButtonComponent = (props) => {
+    const classes = useStyles(props);
+
+    return <Button className={classes.root} {...props} />;
 }
 
-export default withStyles(styles)(ButtonComponent);
+export default ButtonComponent;
