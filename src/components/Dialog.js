@@ -26,7 +26,7 @@ const DialogComponent = ({
     const isConfirmActive = () => {
         const isNotFilled = !name || !rate;
         const isSameValue = selectedRow.name === name?.trim() && selectedRow.rate === rate?.trim();
-        const isContainsOnlyNumbers = !(/^\d+$/.test(rate));
+        const isContainsOnlyNumbers = !(/^\d+$/.test(rate?.trim()));
 
         return isNotFilled || isSameValue || isContainsOnlyNumbers;
     }
@@ -40,19 +40,21 @@ const DialogComponent = ({
 
     const onConfirm = (selectedRow) => {
         const { dialogType, rate: selectedRowRate, id: selectedRowId, currencyId } = selectedRow;
+        const newName = name.trim();
+        const newRate = rate.trim();
 
         switch (dialogType) {
             case 'Create':
                 return addCurrency({
-                    name,
+                    name: newName,
                     currencyId: lastId + 1,
-                    rate
+                    rate: newRate
                 });
             case 'Edit':
                 return editCurrency({
-                    name,
+                    name: newName,
                     currencyId,
-                    rate: rate || selectedRowRate,
+                    rate: newRate || selectedRowRate,
                     id: selectedRowId
                 });
             case "Remove":

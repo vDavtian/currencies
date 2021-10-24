@@ -13,11 +13,15 @@ const ButtonComponent = memo((props) => {
     const classes = useStyles(props);
 
     return <Button className={classes.root} {...props} />;
-}, (prevProps, nextProps) => {
-    if (prevProps.disabled !== nextProps.disabled) {
-        return false;
-    }
-    return true;
-});
+},
+    // (prevProps, nextProps) => {
+    //     if (prevProps.disabled !== nextProps.disabled
+    //     ) {
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
+);
 
 export default ButtonComponent;
