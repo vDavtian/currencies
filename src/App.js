@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Grid, Typography, Box, withStyles } from "@material-ui/core";
 import { getAllCurrencies } from "./store/actions/currencyActions"
@@ -28,7 +28,6 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
   const [selectedRow, setSelectedRow] = useState({});
   const [searchText, setSearchText] = useState("");
   const lastId = Math.max(...currencies.data.map(item => item.currencyId)) | 0;
-  const data = currencies.data.sort((a, b) => a.currencyId - b.currencyId);;
 
   useEffect(() => {
     getAllCurrencies()
@@ -41,7 +40,9 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
     setSelectedRow({ dialogType: "Create" });
   }
 
-  const filterData = (searchText, data) => {
+  const data = useMemo(() => currencies.data.sort((a, b) => a.currencyId - b.currencyId), [currencies.data]);
+
+  const filterData = useMemo(() => {
     if (!searchText.trim().length) {
       return data;
     }
@@ -50,7 +51,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
       name.toString().toLowerCase().indexOf(searchBy) !== -1)
 
     return filteredData;
-  }
+  }, [data, searchText])
 
   return (
     <div className="App">
@@ -72,7 +73,7 @@ const App = ({ getAllCurrencies, currencies, classes }) => {
             placeholder="Search currency by Currency name" />
         </Box>
         <CurrencyTable
-          data={filterData(searchText, data)}
+          data={filterData}
           searchText={searchText}
           toggleDialog={toggleDialog}
           setSelectedRow={setSelectedRow}
