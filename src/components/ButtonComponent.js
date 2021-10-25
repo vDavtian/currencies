@@ -14,6 +14,7 @@ const ButtonComponent = memo((props) => {
 
     return <Button className={classes.root} {...props} />;
 },
+    // TODO
     // (prevProps, nextProps) => {
     //     if (prevProps.disabled !== nextProps.disabled
     //     ) {

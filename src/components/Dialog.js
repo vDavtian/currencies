@@ -13,15 +13,15 @@ import ButtonComponent from './ButtonComponent';
 const DialogComponent = ({
     lastId, open, selectedRow, toggleDialog, editCurrency, addCurrency, deleteCurrency, classes
 }) => {
-    const [name, setName] = useState('');
-    const [rate, setRate] = useState('');
+    //TODO fix initial state value
+    const [name, setName] = useState(''); // selectedRow.name || ""
+    const [rate, setRate] = useState(''); // selectedRow.rate || ""
 
     useEffect(() => {
+        //TODO remove this part & fix initial state value
         setName(selectedRow.name);
         setRate(selectedRow.rate);
     }, [selectedRow.name, selectedRow.rate]);
-
-    const handleNameChange = (value) => setName(value);
 
     const isConfirmActive = () => {
         const isNotFilled = !name || !rate;
@@ -66,7 +66,7 @@ const DialogComponent = ({
 
     return (
         <div>
-            <Dialog open={open} onClose={toggleDialog}>
+            <Dialog open={open} onClose={onClose}>
                 <div style={{ backgroundColor: '#1f233d', color: 'white' }}>
                     <DialogTitle id="responsive-dialog-title">
                         {`${selectedRow.dialogType} Currency`}
@@ -78,7 +78,7 @@ const DialogComponent = ({
                             <InputBox
                                 defaultValue={name}
                                 placeholder="Enter name"
-                                onChange={(e) => handleNameChange(e.target.value)}
+                                onChange={(e) => setName(e.target.value)}
                             />
                             <br />
                             Rate
